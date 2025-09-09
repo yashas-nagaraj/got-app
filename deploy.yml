@@ -1,0 +1,31 @@
+- name: Deploy GOT containers
+  hosts: webservers
+  become: yes
+  vars:
+    rds_endpoint: "{{ rds_endpoint }}"
+    db_user: "{{ db_user }}"
+    db_pass: "{{ db_pass }}"
+  tasks:
+    - name: Ensure docker installed
+      apt:
+        name: [docker.io, docker-compose]
+        state: present
+        update_cache: yes
+
+    - name: Clone repo
+      git:
+        repo: 'https://github.com/YOUR_ACCOUNT/got-app.git'
+        dest: /opt/got-app
+        version: main
+
+    - name: Build images
+      command: docker build -t got-house /opt/got-app/house
+
+    - name: Run containers
+      shell: |
+        docker rm -f got-home got-house1 got-house2 || true
+        docker run -d --name got-home -p 80:80 got-home
+        docker run -d --name got-house1 -p 3001:3000 -e DB_HOST={{ rds_endpoint }} -e DB_USER={{ db_user }} -e DB_PASS={{ db_pass }} -e DB_NAME=gotdb -e HOUSE_LIST="Stark,Lannister" got-house
+        docker run -d --name got-house2 -p 3002:3000 -e DB_HOST={{ rds_endpoint }} -e DB_USER={{ db_user }} -e DB_PASS={{ db_pass }} -e DB_NAME=gotdb -e HOUSE_LIST="Targaryen,Baratheon" got-house
+      args:
+        executable: /bin/bash
