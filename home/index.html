@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GOT Mini App</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:2rem}
+    a{display:block;margin:0.5rem 0}
+  </style>
+</head>
+<body>
+  <h1>Welcome to GOT Mini App</h1>
+  <p>Explore the houses:</p>
+  <ul>
+    <li><a href="/house1">House set A (Stark, Lannister)</a></li>
+    <li><a href="/house2">House set B (Targaryen, Baratheon)</a></li>
+  </ul>
+  <p>When deployed on EC2, the house apps run on ports 3001 and 3002. The links above assume an nginx reverse-proxy mapping <code>/house1</code> and <code>/house2</code> to the backend apps.</p>
+</body>
+</html>

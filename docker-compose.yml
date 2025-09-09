@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  home:
+    build: ./home
+    ports:
+      - "8080:80"
+  house1:
+    build: ./house
+    environment:
+      - PORT=3000
+      - HOUSE_LIST=Stark,Lannister
+      - DB_HOST=host.docker.internal
+      - DB_USER=gotadmin
+      - DB_PASS=gotpass
+      - DB_NAME=gotdb
+    ports:
+      - "3001:3000"
+  house2:
+    build: ./house
+    environment:
+      - PORT=3000
+      - HOUSE_LIST=Targaryen,Baratheon
+      - DB_HOST=host.docker.internal
+      - DB_USER=gotadmin
+      - DB_PASS=gotpass
+      - DB_NAME=gotdb
+    ports:
+      - "3002:3000"
